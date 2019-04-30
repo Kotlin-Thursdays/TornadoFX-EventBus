@@ -7,6 +7,8 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
+class PrintFileToConsole(val file: String, val textFile: String): FXEvent()
+
 class MainViewController: Controller() {
 
     val view: MainView by inject()
@@ -32,8 +34,7 @@ class MainViewController: Controller() {
 
 
         if (filterFiles(fileText)) {
-            view.console.items.add(fileText)
-            view.console.items.add("===================================================================")
+            fire(PrintFileToConsole(file.toString(), fileText))
         }
     }
 

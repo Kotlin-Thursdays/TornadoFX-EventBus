@@ -2,11 +2,14 @@ package com.example.demo.view
 
 import com.example.demo.app.Styles
 import com.example.demo.controller.MainViewController
+import com.example.demo.controller.PrintFileToConsole
 import javafx.geometry.Pos
 import javafx.scene.control.ListView
 import javafx.scene.layout.HBox
 import tornadofx.*
 import java.io.File
+
+class ReadFilesRequest(val file: File) : FXEvent(EventBus.RunOn.BackgroundThread)
 
 class MainView : View() {
 
@@ -15,6 +18,12 @@ class MainView : View() {
     val consolePath = System.getProperty("os.name") + " ~ " + System.getProperty("user.name") + ": "
     lateinit var console: ListView<String>
     lateinit var overlay: HBox
+
+    init {
+        subscribe<ReadFilesRequest> { event ->
+            controller.walk(event.file.absolutePath)
+        }
+    }
 
     override val root = stackpane {
         vbox {
@@ -42,6 +51,11 @@ class MainView : View() {
                 }
                 console = listview {
                     items.add(consolePath)
+                    subscribe<PrintFileToConsole> { event ->
+                        items.add(consolePath + event.file)
+                        items.add(event.textFile)
+                        items.add("===================================================================")
+                    }
                 }
             }
 
@@ -53,7 +67,7 @@ class MainView : View() {
                     }?.let {
                         console.items.clear()
                         console.items.add("SEARCHING FILES...")
-                        controller.walk(it.absolutePath)
+                        fire(ReadFilesRequest(it))
                     }
                 }
                 vboxConstraints {
