@@ -70,11 +70,4 @@ class MainView : View() {
             isMouseTransparent = true
         }.addClass(Styles.transparentLayer)
     }
-
-    private fun writeFileToConsole(file: String, fileText: String) {
-        console.items.add(consolePath + file)
-        console.items.add("READING FILES...")
-        console.items.add(fileText)
-        console.items.add("===================================================================")
-    }
 }
