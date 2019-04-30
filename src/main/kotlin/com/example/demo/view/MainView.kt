@@ -8,8 +8,6 @@ import javafx.scene.layout.HBox
 import tornadofx.*
 import java.io.File
 
-class ReadFilesRequest(val file: File) : FXEvent(EventBus.RunOn.BackgroundThread)
-
 class MainView : View() {
 
     val controller: MainViewController by inject()
@@ -24,7 +22,6 @@ class MainView : View() {
             prefHeight = 600.0
 
             hbox {
-                // imageview("tornado-fx-logo.png")
                 hboxConstraints {
                     marginLeftRight(20.0)
                     marginTopBottom(20.0)
